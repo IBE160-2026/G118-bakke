@@ -4,7 +4,7 @@ status: final
 created: 2026-09-19
 updated: 2026-09-19
 language: en
-translation_of: brief.md
+translation_of: product_brief.md
 ---
 
 # Product Brief: Barneloggen

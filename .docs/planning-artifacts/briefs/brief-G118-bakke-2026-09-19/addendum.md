@@ -22,4 +22,4 @@ Ekte data om barnet i test betyr at KI-leverandør og dataminimering må avklare
 ## Åpne spørsmål
 - Hva vurderes ut fra kursets rubrikk eller forventninger til briefen? (rundt 15 minutter å sjekke)
 - Hvordan søvnkvalitet «ikke vurdert» håndteres i statistikk og oppsummeringer.
-- (Løst) Engelsk versjon: brief.en.md.
+- (Løst) Engelsk versjon: product_brief.en.md.
