@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barneloggen - Scope Brainstorm</title>
+<style>
+:root{
+  --bg:#141a33;--bg2:#1c2447;--card:#232c57;--ink:#f3efe6;--mute:#a9b0d3;
+  --sleep:#8f9bff;--meal:#ffc46b;--diaper:#5fd3c4;--growth:#8fdc8a;--warn:#ff8f8f;--line:#ffffff1f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#2b3574 0,transparent 60%),var(--bg);color:var(--ink);
+  font:16px/1.55 "Segoe UI",system-ui,sans-serif}
+.stars{position:fixed;inset:0;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(2px 2px at 20px 30px,#fff8,transparent),radial-gradient(1.5px 1.5px at 120px 90px,#fff6,transparent),
+  radial-gradient(2px 2px at 260px 40px,#fff7,transparent),radial-gradient(1.5px 1.5px at 340px 140px,#fff5,transparent);
+  background-size:380px 180px}
+main{position:relative;max-width:980px;margin:0 auto;padding:0 20px 80px}
+header{padding:70px 0 30px;text-align:center}
+.moon{width:74px;height:74px;border-radius:50%;margin:0 auto 18px;background:radial-gradient(circle at 35% 35%,#fff7dc,#ffd98a);
+  box-shadow:0 0 60px #ffd98a55;animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+h1{font-size:clamp(2rem,6vw,3.4rem);margin:.1em 0;letter-spacing:.5px}
+.sub{color:var(--mute);max-width:640px;margin:8px auto 0}
+.pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px}
+.pill{padding:5px 12px;border-radius:99px;font-size:.85rem;border:1px solid var(--line);background:#ffffff0d}
+nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:10px;
+  background:#141a33d9;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav a{color:var(--ink);text-decoration:none;font-size:.88rem;padding:6px 12px;border-radius:99px;border:1px solid transparent}
+nav a:hover{border-color:var(--line);background:#ffffff10}
+section{margin-top:64px}
+h2{font-size:1.7rem;margin:0 0 4px}
+.tag{color:var(--mute);margin:0 0 22px}
+.num{display:inline-block;background:var(--sleep);color:#141a33;border-radius:8px;padding:0 9px;margin-right:8px;font-weight:700}
+
+/* 1 backcasting road */
+.road{position:relative;margin-left:14px;padding-left:28px;border-left:3px dashed #ffffff40}
+.stop{position:relative;margin:0 0 16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+.stop::before{content:"";position:absolute;left:-39px;top:18px;width:16px;height:16px;border-radius:50%;background:var(--sleep);border:3px solid var(--bg)}
+.stop.end::before{background:var(--meal)}
+.stop.start::before{background:var(--growth)}
+.stop b{display:block}.stop small{color:var(--mute)}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:20px}
+.note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.note h4{margin:0 0 6px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+
+/* 2 flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.flip{perspective:900px;height:150px;cursor:pointer;outline:none}
+.flip>div{position:relative;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip:hover>div,.flip:focus>div,.flip.on>div{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;font-size:.93rem}
+.f{background:#3a2130;border:1px solid #ff8f8f55}
+.b{background:#153a37;border:1px solid #5fd3c455;transform:rotateY(180deg)}
+.face em{font-style:normal;font-size:.72rem;letter-spacing:1.4px;text-transform:uppercase;opacity:.8;margin-bottom:4px}
+.hint{color:var(--mute);font-size:.85rem;margin:-10px 0 14px}
+
+/* 3 jars */
+.jars{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.jar{border-radius:18px;padding:16px;border:2px solid}
+.jar.real{border-color:var(--meal);background:#ffc46b12}
+.jar.imag{border-color:var(--diaper);background:#5fd3c412}
+.jar h3{margin:0 0 10px}
+.jar li{margin:0 0 8px;list-style:none;padding-left:4px}
+.jar ul{padding:0;margin:0}
+.chip{display:inline-block;font-size:.72rem;border-radius:99px;padding:1px 9px;margin-right:6px;background:#ffffff18}
+.assets{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.asset{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.9rem}
+.asset b{color:var(--growth)}
+
+/* 4 morphological */
+.morph{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:9px 0}
+.row label{width:130px;color:var(--mute);font-size:.85rem}
+.opt{border:1px solid var(--line);background:#ffffff0a;color:var(--ink);border-radius:99px;padding:5px 12px;font-size:.84rem;cursor:pointer}
+.opt.sel{background:var(--sleep);color:#141a33;border-color:var(--sleep);font-weight:600}
+.meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px}
+.meter b{display:flex;justify-content:space-between;font-size:.85rem}
+.bar{height:10px;border-radius:99px;background:#ffffff18;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;width:0;border-radius:99px;transition:width .4s}
+.verdict{margin-top:14px;padding:12px 14px;border-radius:12px;background:#0003;border:1px dashed var(--line)}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.gaps{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:20px}
+
+/* climax */
+.climax{margin-top:80px;padding:26px;border-radius:24px;border:1px solid #ffffff33;background:linear-gradient(160deg,#2b3574,#1c2447)}
+.cal{display:grid;grid-template-columns:44px repeat(7,1fr);gap:0;margin:20px 0;background:#0003;border-radius:14px;overflow:hidden;font-size:.72rem}
+.cal>div{border-left:1px solid #ffffff12;position:relative;min-height:262px}
+.cal .hd{min-height:0;text-align:center;padding:6px 0;color:var(--mute);border-bottom:1px solid #ffffff18}
+.cal .ax{color:var(--mute);padding:4px;line-height:0}
+.blk{position:absolute;left:8%;right:8%;border-radius:8px}
+.mk{position:absolute;width:11px;height:11px;border-radius:50%;border:2px solid #141a33}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.box{background:#0003;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.box h4{margin:0 0 8px}
+.box li{margin:0 0 5px}
+.cut{color:var(--warn)}
+.next{margin-top:18px;padding:14px 16px;border-radius:14px;background:#8f9bff22;border:1px solid var(--sleep)}
+code{background:#0005;padding:1px 6px;border-radius:6px}
+footer{margin-top:50px;text-align:center;color:var(--mute);font-size:.85rem}
+@media (max-width:640px){.row label{width:100%}.cal{font-size:.6rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<main>
+<header>
+  <div class="moon" aria-hidden="true"></div>
+  <h1>Barneloggen</h1>
+  <p class="sub">A scoping brainstorm: how to land a working, beautiful baby-log web app by mid-November, solo, with Claude writing the code.</p>
+  <div class="pills">
+    <span class="pill">Ideate-for-me session</span><span class="pill">109 ideas</span><span class="pill">4 techniques</span><span class="pill">2026-09-19</span>
+  </div>
+</header>
+<nav>
+  <a href="#t1">Backcasting</a><a href="#t2">Reverse</a><a href="#t3">Constraints</a><a href="#t4">Morphological</a><a href="#end">The answer</a>
+</nav>
+
+<section id="t1">
+  <h2><span class="num">1</span>Backcasting</h2>
+  <p class="tag">Fix the finished picture first. Then walk backwards to the one move you must make today.</p>
+  <div class="road">
+    <div class="stop end"><b>Mid-Nov - Demo day</b>Login with one click, dashboard for Emma, tap a sleep timer, type "Emma ate half a banana at 10", confirm the AI draft, watch it settle into the week calendar.<small>Three minutes. Nothing crashes.</small></div>
+    <div class="stop"><b>Weeks 7-8 - Freeze and polish</b>Hard feature freeze around 1 Nov. Bug bash on seeded data, README as report, screenshots and a 90-second backup recording.</div>
+    <div class="stop"><b>Week 6 - AI guardrails</b>Meal parsing done: schema-only output, draft-confirm card, empty field when unsure.</div>
+    <div class="stop"><b>Week 5 - The calendar</b>Overlaps, cross-midnight sleep, clickable groups. Fallback ladder ready.</div>
+    <div class="stop"><b>Weeks 3-4 - Core CRUD</b>Sleep and meals fully finished, then history and basic stats.</div>
+    <div class="stop start"><b>Now - The first move</b>Deploy an authenticated empty shell with the design tokens on day one. Everything after is always live.</div>
+  </div>
+  <div class="split">
+    <div class="note"><h4>What the grader should feel</h4>Warm, soft, calm. Skeleton loaders, illustrated empty states, human Norwegian microcopy, thumb-sized quick-add buttons, a night mode for 3 a.m. feedings.</div>
+    <div class="note"><h4>Type colours, everywhere</h4>
+      <span class="dot" style="background:var(--sleep)"></span>Sleep &nbsp;<span class="dot" style="background:var(--meal)"></span>Meals<br>
+      <span class="dot" style="background:var(--diaper)"></span>Diapers &nbsp;<span class="dot" style="background:var(--growth)"></span>Growth<br>
+      <small style="color:var(--mute)">Same colour in calendar, history, stats and buttons.</small></div>
+    <div class="note"><h4>Always demoable</h4>Main branch is always deployable. A five-minute Sunday check: does the demo script still run?</div>
+  </div>
+</section>
+
+<section id="t2">
+  <h2><span class="num">2</span>Reverse Brainstorming</h2>
+  <p class="tag">How would we guarantee failure? Then flip each answer.</p>
+  <p class="hint">Tap or hover a card to flip it from failure to fix.</p>
+  <div class="flips" id="flips"></div>
+</section>
+
+<section id="t3">
+  <h2><span class="num">3</span>Constraint Mapping</h2>
+  <p class="tag">Sort what is truly fixed from what only feels fixed.</p>
+  <div class="jars">
+    <div class="jar real"><h3>Real constraints</h3><ul>
+      <li><span class="chip">time</span>About 8 weeks, one person.</li>
+      <li><span class="chip">bottleneck</span>Your review and testing time, not Claude's typing.</li>
+      <li><span class="chip">grading</span>Working and well-designed comes first; completeness is a bonus. Depth beats breadth.</li>
+      <li><span class="chip">safety</span>No medical advice - and it is a selling point.</li></ul></div>
+    <div class="jar imag"><h3>Imagined constraints</h3><ul>
+      <li><span class="chip">contract?</span>"The proposal's MVP list must be built." It is your own draft.</li>
+      <li><span class="chip">trackers</span>"All four must exist." Sleep and meals carry every hard requirement.</li>
+      <li><span class="chip">children</span>"Multi-child from day one." Keep child_id, show one child.</li>
+      <li><span class="chip">signup</span>"Email flows needed." OAuth or magic link plus Demo login is enough.</li></ul></div>
+  </div>
+  <div class="assets">
+    <div class="asset"><b>Turn into asset</b><br>Solo + Claude = a prompt and decision log that is the IBE160 subject itself.</div>
+    <div class="asset"><b>Turn into asset</b><br>"Small, polished, safe" is a stronger story than "big and fragile".</div>
+    <div class="asset"><b>Route around</b><br>Restyle a calendar library instead of writing a layout engine.</div>
+    <div class="asset"><b>Route around</b><br>Foods are created on first use; the catalog page comes later.</div>
+    <div class="asset"><b>Dissolve</b><br>Free-text AI chat: out. It is scope and a safety risk.</div>
+    <div class="asset"><b>Redefine done</b><br>Create, read, update, delete, validation, empty state, error state.</div>
+  </div>
+  <p class="hint" style="margin-top:14px">A 15-minute check that could reshape everything: find out what the examiner actually values before locking scope.</p>
+</section>
+
+<section id="t4">
+  <h2><span class="num">4</span>Morphological Analysis</h2>
+  <p class="tag">Eight independent dials. Twist them and see what the project becomes.</p>
+  <div class="morph">
+    <div class="presets" id="presets"></div>
+    <div id="dials"></div>
+    <div class="meters">
+      <div class="meter"><b><span>Design and polish</span><span id="v0"></span></b><div class="bar"><i id="m0" style="background:var(--meal)"></i></div></div>
+      <div class="meter"><b><span>AI story</span><span id="v1"></span></b><div class="bar"><i id="m1" style="background:var(--sleep)"></i></div></div>
+      <div class="meter"><b><span>Spec coverage</span><span id="v2"></span></b><div class="bar"><i id="m2" style="background:var(--diaper)"></i></div></div>
+      <div class="meter"><b><span>Delivery risk</span><span id="v3"></span></b><div class="bar"><i id="m3" style="background:var(--warn)"></i></div></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <p class="hint" style="margin:10px 0 0">Meters are a rough gut-feel model from this session, not measurements.</p>
+  </div>
+  <div class="gaps">
+    <div class="note"><h4>The empty cell: quick-add bar</h4>One text box that turns any sentence into a confirmable draft for any entry type. "Emma slept 13 to 15 and was restless." Almost free once meal parsing exists.</div>
+    <div class="note"><h4>Voice, tiny effort</h4>Browser speech input into that bar. Hands-full parents dictate. Big wow.</div>
+    <div class="note"><h4>Draft-confirm card</h4>AI output always lands in an editable preview beside the original sentence. Never straight to the database.</div>
+    <div class="note"><h4>Guardrail tests</h4>"Is this normal?" and "should I worry?" must always yield a non-advice answer. Great report material.</div>
+  </div>
+</section>
+
+<section id="end" class="climax">
+  <h2>The answer: a three-tier plan, nothing thrown away</h2>
+  <p class="tag">One week of the finished app, drawn from the plan. Sleep in indigo, meals in amber, diapers in teal.</p>
+  <div class="cal" id="cal" aria-label="Illustrative week calendar"></div>
+  <div class="two">
+    <div class="box"><h4 style="color:var(--growth)">Tier 1 - Core: finished and polished</h4><ul>
+      <li>OAuth or magic link, a Demo login, and a child profile (child_id on everything)</li>
+      <li>Sleep with quality, overlap rule and cross-midnight handling</li>
+      <li>Meals, own food catalog, several foods per meal</li>
+      <li>Diapers with type, colour and consistency</li>
+      <li>Week calendar as hero, with a fallback ladder: grid, day view, grouped list</li>
+      <li>Dashboard, history with edit and delete, basic statistics</li>
+      <li>AI meal entry: draft-confirm card, schema-only output</li>
+      <li>Custom design system</li></ul></div>
+    <div class="box"><h4 style="color:var(--meal)">Tier 2 - Nice-to-have, in this order</h4><ol>
+      <li>Growth, with separate weight and length charts</li>
+      <li>AI trend analysis: sleep card, then per area, then whole picture with week-on-week comparison</li>
+      <li>AI quick-add for every entry type</li>
+      <li>AI food suggestions: category, unit, duplicates</li>
+      <li>Multi-child switcher</li>
+      <li>Food catalog management page</li>
+      <li>Per-domain charts and period comparison</li>
+      <li>Night mode, PWA, voice input (if not already done)</li></ol></div>
+    <div class="box"><h4 style="color:var(--diaper)">Tier 3 - Planned future</h4><ul>
+      <li>Pumping, temperature, medication log, milestones, notes</li>
+      <li>Summaries with clickable links into the timeline</li>
+      <li>Multiple guardians per child</li>
+      <li>CSV / data export</li>
+      <li>Free-text questions to AI (needs its own safety review)</li></ul>
+      <p style="color:var(--mute);font-size:.88rem;margin:10px 0 0">Kept cheap by design: a shared entry pattern, child_id everywhere, ownership that can become shared access, and AI working from a structured stats packet.</p></div>
+  </div>
+  <div class="next"><b>Connections worth keeping</b><br>
+  Schema-only AI output is both the safety design and the cheap way to extend AI to every entry type. Day-one deploy plus a Sunday check beats late integration. Solo-plus-Claude, the BMad artefacts and a decision log turn the process itself into graded evidence. Only three real risks remain (calendar layout, AI safety, timezone logic) and each has a fallback.</div>
+  <div class="next" style="margin-top:12px"><b>Next</b> Run <code>bmad-prd</code> with this session as input, and check the course rubric first.</div>
+</section>
+<footer>Barneloggen scope brainstorm - session log: <code>.memlog.md</code> in this folder</footer>
+</main>
+<script>
+const FL=[
+["Build all four trackers at half quality","Fewer trackers, each fully finished: validation, edit, delete, empty and error states."],
+["Leave the calendar for last","Build it early against seeded data."],
+["Default-looking UI, no design system","Tokens and components before any feature screen."],
+["AI leaks medical-sounding advice","AI only fills a schema. No free-text path exists to leak from."],
+["Weeks lost on password-reset flows","Hosted auth or OAuth. Never hand-build auth."],
+["Creep into pumping, temperature, medication","New entry types are small config, and only after core work is done."],
+["Midnight and timezone bugs","Store UTC, one date utility, tests for cross-midnight sleep."],
+["Demo dies on API key or network","Mock or cached AI fallback and rate limiting."],
+["First deploy happens in November","Deploy in week 1 and every week."],
+["Mobile is an afterthought","Mobile-first; desktop is the expansion."],
+["Claude drifts between sessions","AGENTS.md, an architecture doc and conventions for every session."],
+["No tests, regressions at the end","Test only the riskiest logic: overlap, cross-midnight, AI output validation."],
+["You cannot explain your own code","Boring architecture and a short decision log."],
+["Stats disagree with the calendar","One shared query layer feeds calendar, history and stats."],
+["A design rabbit hole eats the semester","Time-box to a system plus three hero screens."],
+["Over-engineer catalog and duplicate detection","Food is created on first use. Dedupe only if time remains."],
+["Ignore the feature freeze","Freeze date is a calendar entry and a rule in the project file."],
+["Pick an unfamiliar stack","A boring stack Claude and you both handle well."]];
+const fl=document.getElementById('flips');
+FL.forEach(([f,b])=>{const d=document.createElement('div');d.className='flip';d.tabIndex=0;
+ d.innerHTML='<div><div class="face f"><em>How to fail</em>'+f+'</div><div class="face b"><em>The inverse</em>'+b+'</div></div>';
+ d.onclick=()=>d.classList.toggle('on');fl.appendChild(d);});
+
+const DIALS=[
+ {n:"Trackers",o:["Sleep only","Sleep + meals","+ diapers","+ growth","+ extensions"],s:{cov:[1,2,3,4,5],risk:[0,1,2,3,5],pol:[1,0,-1,-2,-4]}},
+ {n:"Calendar",o:["List timeline","Day view","Library week grid","Custom week grid"],s:{cov:[0,1,2,3],risk:[0,1,2,4],pol:[0,1,3,4]}},
+ {n:"AI",o:["None","Food suggestions","Meal parsing","Parsing for all types","+ summaries"],s:{cov:[0,1,2,3,4],risk:[0,1,2,3,4],pol:[0,0,1,2,2],ai:[0,2,4,6,7]}},
+ {n:"Auth",o:["Demo login","OAuth / magic link","Custom email + reset"],s:{cov:[0,1,2],risk:[0,1,4],pol:[0,0,-1]}},
+ {n:"Design",o:["Component library","Custom system","+ night mode, motion"],s:{cov:[0,0,0],risk:[0,1,2],pol:[2,5,7]}},
+ {n:"Children",o:["Single in UI","Multi switcher"],s:{cov:[0,2],risk:[0,1],pol:[0,0]}},
+ {n:"Stats",o:["Counters","Per-domain charts","Period comparison","+ AI weekly summary"],s:{cov:[1,2,3,4],risk:[0,1,2,3],pol:[0,1,1,2],ai:[0,0,0,2]}},
+ {n:"Platform",o:["Responsive web","Installable PWA"],s:{cov:[0,0],risk:[0,0],pol:[0,1]}}];
+const PRE={
+ "The Tiered Plan":[2,2,2,1,2,0,1,1],
+ "The Breadth":[3,0,1,1,0,1,2,0],
+ "Showpiece Calendar":[2,3,2,1,1,0,1,0],
+ "The AI Story":[1,1,3,1,1,0,3,0],
+ "Safe Minimum":[1,0,0,0,0,0,0,0],
+ "Balanced Four":[3,2,2,1,1,0,1,0]};
+let sel=PRE["The Tiered Plan"].slice();
+const dials=document.getElementById('dials'),pres=document.getElementById('presets');
+function draw(){
+ dials.innerHTML='';
+ DIALS.forEach((d,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML='<label>'+d.n+'</label>';
+  d.o.forEach((o,j)=>{const b=document.createElement('button');b.className='opt'+(sel[i]===j?' sel':'');b.textContent=o;
+   b.onclick=()=>{sel[i]=j;draw();calc();};r.appendChild(b);});dials.appendChild(r);});
+}
+Object.keys(PRE).forEach(k=>{const b=document.createElement('button');b.className='opt';b.textContent=k;
+ b.onclick=()=>{sel=PRE[k].slice();draw();calc();};pres.appendChild(b);});
+function sum(key){let t=0;DIALS.forEach((d,i)=>{const a=d.s[key];if(a)t+=a[sel[i]]||0;});return t;}
+function pct(v,max){return Math.max(4,Math.min(100,Math.round(v/max*100)));}
+function calc(){
+ const cov=sum('cov'),risk=sum('risk'),pol=sum('pol'),ai=sum('ai');
+ // polish suffers when risk is high because time is thin
+ const polish=Math.max(0,pol-Math.max(0,risk-12)*0.8);
+ const M=[pct(polish,20),pct(ai,13),pct(cov,24),pct(risk,26)];
+ M.forEach((v,i)=>{document.getElementById('m'+i).style.width=v+'%';document.getElementById('v'+i).textContent=v;});
+ let msg;
+ if(M[3]>=70)msg="Too much for eight weeks. Polish will be the first thing to give, and polish is an absolute.";
+ else if(M[0]>=60&&M[3]<=50)msg="Strong balance: high polish with manageable risk. This is where the session lands.";
+ else if(M[1]<25)msg="Safe, but thin on the AI theme of the course.";
+ else if(M[2]<30)msg="Low spec coverage. Fine only if the demo is spotless.";
+ else msg="Workable, but check whether polish is being traded away for coverage.";
+ document.getElementById('verdict').textContent=msg;
+}
+draw();calc();
+
+// illustrative week calendar
+const cal=document.getElementById('cal');const H=230;
+const y=h=>h/24*H;
+const S={s:'#8f9bff',m:'#ffc46b'};
+let h='<div class="hd"></div>'+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>'<div class="hd">'+d+'</div>').join('');
+h+='<div class="ax">'+[0,6,12,18].map(t=>'<span style="position:absolute;top:'+(y(t)+26)+'px;left:6px">'+String(t).padStart(2,'0')+'</span>').join('')+'</div>';
+const sleeps=[[[0,6.5],[13,15]],[[0,6],[12.5,14.5]],[[0,6.5],[13,15.2]],[[0,5.5],[12,14]],[[0,6.5],[13.5,15]],[[0,7],[12.5,15]],[[0,6],[13,14.5]]];
+const meals=[[7,10,12.5,17.5],[7.2,10,12,17],[7,9.8,12.3,17.6],[6.8,10.2,12,17.2],[7,10,12.4,17.5],[7.5,10.5,12.2,17],[7,10,12.5,17.4]];
+sleeps.forEach((d,i)=>{h+='<div><div style="height:26px"></div>';
+ d.forEach(([a,b])=>{h+='<div class="blk" style="top:'+(y(a)+26)+'px;height:'+(y(b)-y(a))+'px;background:'+S.s+'aa"></div>';});
+ meals[i].forEach((t,k)=>{h+='<div class="mk" style="top:'+(y(t)+22)+'px;left:'+(k%2?'58%':'26%')+';background:'+S.m+'"></div>';});
+ [8.5,14.5,20.5].forEach((t,k)=>{h+='<div class="mk" style="top:'+(y(t)+22)+'px;left:'+(k%2?'72%':'42%')+';background:#5fd3c4"></div>';});
+ h+='</div>';});
+cal.innerHTML=h;
+</script>
+</body>
+</html>
